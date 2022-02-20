@@ -1,4 +1,4 @@
-package task.tap.payment.model.entity.dto;
+package task.tap.payment.model.paylod;
 
 import java.util.List;
 
@@ -9,7 +9,6 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class CustomerDTO {
-	private Long id;
-	private List<CustomerWalletDTO> customerWalletDTO;
+public class CustomerIds {
+	private List<Long> ids;
 }

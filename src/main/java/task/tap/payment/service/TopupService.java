@@ -1,22 +1,28 @@
 package task.tap.payment.service;
 
 import java.time.LocalDateTime;
+import java.util.List;
+import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import task.tap.payment.mapper.CustomerMapper;
 import task.tap.payment.model.entity.Customer;
 import task.tap.payment.model.entity.CustomerWallet;
 import task.tap.payment.model.entity.Fees;
 import task.tap.payment.model.entity.Topup;
+import task.tap.payment.model.entity.dto.CustomerDTO;
 import task.tap.payment.model.entity.dto.TopupDTO;
 import task.tap.payment.model.enums.Status;
+import task.tap.payment.model.paylod.CustomerIds;
 import task.tap.payment.model.paylod.TopupRequest;
 import task.tap.payment.repository.CustomerRepository;
 import task.tap.payment.repository.CustomerWalletRepository;
 import task.tap.payment.repository.TopopRepostitory;
+
 
 @Slf4j
 @Service
@@ -26,6 +32,7 @@ public class TopupService {
 	private final CustomerRepository customerRepository;
 	private final CustomerWalletRepository customerWalletRepository;
 	private final TopopRepostitory topopRepostitory;
+	private final CustomerMapper customerMapper;
 
 	public TopupDTO topup(TopupRequest request) throws Exception {
 		TopupDTO topupDTO = new TopupDTO();
@@ -114,6 +121,13 @@ public class TopupService {
 		Customer customer = customerRepository.findById(request.getCustomerRequest().getId())
 				.orElseThrow(() -> new Exception("Customer Not Found!"));
 		return customer;
+	}
+
+	public List<CustomerDTO> findAllByIds(CustomerIds ids) {
+
+		List<Customer> customers = customerRepository.findAllById(ids.getIds());
+		return customers.stream().map(c -> (customerMapper.toDTO(c))).collect(Collectors.toList());
+
 	}
 
 }

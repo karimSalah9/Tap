@@ -9,4 +9,5 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class CustomerWalletDTO {
 	private Long id;
+	private double amount;
 }
